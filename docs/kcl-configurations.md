@@ -1,7 +1,11 @@
 # KCL Configurations
 
-Here's the table in GitHub README markdown format (.md) for the KCL configuration properties:
+You can set configuration properties to customize Kinesis Client Library's functionality to meet your specific requirements. The following table describes configuration properties and classes.
 
+> [!Important]
+> In KCL 3.x, the load balancing algorithm aims to achieve even CPU utilization across workers, not an equal number of leases per worker. Setting maxLeasesForWorker too low, you might limit KCL's ability to balance the workload effectively. If you use the maxLeasesForWorker configuration, consider increasing its value to allow for the best possible load distribution.
+
+## List of KCL configuration properties
 | Configuration property | Configuration class | Description | Default value |
 |------------------------|----------------------|-------------|---------------|
 | applicationName | ConfigsBuilder | The name for this KCL application. Used as the default for the tableName and consumerName. | Not applicable |
@@ -42,3 +46,14 @@ Here's the table in GitHub README markdown format (.md) for the KCL configuratio
 | metricsMaxQueueSize | MetricsConfig | Maximum number of metrics to buffer before publishing to CloudWatch. | 10,000 |
 | metricsLevel | MetricsConfig | Granularity level of CloudWatch metrics to be enabled and published. | MetricsLevel.DETAILED |
 | metricsEnabledDimensions | MetricsConfig | Controls allowed dimensions for CloudWatch Metrics. | All dimensions |
+
+
+## Discontinued configuration properties in KCL 3.x
+The following configuration properties are discontinued in KCL 3.x:
+| Configuration property | Configuration class | Description |
+|------------------------|----------------------|-------------|
+| maxLeasesToStealAtOneTime | LeaseManagementConfig | The maximum number of leases an application should attempt to steal at one time. KCL 3.x will ignore this configuration and reassign leases based on the resource utilization of workers. |
+| enablePriorityLeaseAssignment | LeaseManagementConfig | Controls whether workers should prioritize taking very expired leases (leases not renewed for 3x the failover time) and new shard leases, regardless of target lease counts but still respecting max lease limits. KCL 3.x will ignore this configuration and always spread expired leases across workers. |
+
+> [!Important]
+> You still must have the discontiuned configuration properties during the migration from previous KCL verisons to KCL 3.x. During the migration, the KCL worker will first start with the KCL 2.x compatible mode and switch to the KCL 3.x functionality mode when it detects that all KCL workers of the application are ready to run KCL 3.x. These discontinued configurations are needed while KCL workers are running the KCL 2.x compatible mode.

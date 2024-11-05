@@ -48,7 +48,7 @@ You can set configuration properties to customize Kinesis Client Library's funct
 | metricsEnabledDimensions | MetricsConfig | Controls allowed dimensions for CloudWatch Metrics. | All dimensions |
 
 ## New configurations in KCL 3.x
-The following configuraiton properties are newly added in KCL 3.x: 
+The following configuration properties are newly added in KCL 3.x: 
 | Configuration property | Configuration class | Description | Default value |
 |---|---|---|---:|
 | reBalanceThresholdPercentage | LeaseManagementConfig | A percentage value that determines when the load balancing algorithm should consider reassigning shards among workers.  This is a new configuration introduced in KCL 3.x. | 10 |

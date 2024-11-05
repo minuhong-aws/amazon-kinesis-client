@@ -3,7 +3,7 @@
 You can set configuration properties to customize Kinesis Client Library's functionality to meet your specific requirements. The following table describes configuration properties and classes.
 
 > [!Important]
-> In KCL 3.x, the load balancing algorithm aims to achieve even CPU utilization across workers, not an equal number of leases per worker. Setting maxLeasesForWorker too low, you might limit KCL's ability to balance the workload effectively. If you use the maxLeasesForWorker configuration, consider increasing its value to allow for the best possible load distribution.
+> In KCL 3.x, the load balancing algorithm aims to achieve even CPU utilization across workers, not an equal number of leases per worker. Setting `maxLeasesForWorker` too low, you might limit KCL's ability to balance the workload effectively. If you use the `maxLeasesForWorker` configuration, consider increasing its value to allow for the best possible load distribution.
 
 ## List of KCL configuration properties
 | Configuration property | Configuration class | Description | Default value |

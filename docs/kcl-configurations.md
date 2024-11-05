@@ -47,10 +47,23 @@ You can set configuration properties to customize Kinesis Client Library's funct
 | metricsLevel | MetricsConfig | Specifies the granularity level of CloudWatch metrics to be enabled and published.   Possible values: NONE, SUMMARY, DETAILED. | MetricsLevel.DETAILED |
 | metricsEnabledDimensions | MetricsConfig | Controls allowed dimensions for CloudWatch Metrics. | All dimensions |
 
+##New configurations in KCL 3.x
+The following configuraiton properties are newly added in KCL 3.x: 
+| Configuration property | Configuration class | Description | Default value |
+|---|---|---|---:|
+| reBalanceThresholdPercentage | LeaseManagementConfig | A percentage value that determines when the load balancing algorithm should consider reassigning shards among workers.  This is a new configuration introduced in KCL 3.x. | 10 |
+| dampeningPercentage | LeaseManagementConfig | A percentage value that is used to dampen the amount of load that will be moved from the overloaded worker in a single rebalance operation.  This is a new configuration introduced in KCL 3.x. | 60 |
+| allowThroughputOvershoot | LeaseManagementConfig | Determines whether additional lease still needs to be taken from the overloaded worker even if it causes total amount of lease throughput taken to exceed the desired throughput amount.  This is a new configuration introduced in KCL 3.x. | TRUE |
+| disableWorkerMetrics | LeaseManagementConfig | Determines if KCL should ignore resource metrics from workers (such as CPU utilization) when reassigning leases and load balancing. Set this to TRUE if you want to prevent KCL from load balancing based on CPU utilization.  This is a new configuration introduced in KCL 3.x. | FALSE |
+| maxThroughputPerHostKBps | LeaseManagementConfig | Amount of the maximum throughput to assign to a worker during the lease assignment.  This is a new configuration introduced in KCL 3.x. | Unlimited |
+| isGracefulLeaseHandoffEnabled | LeaseManagementConfig | Controls the behavior of lease handoff between workers. When set to true, KCL will attempt to gracefully transfer leases by allowing the shard's RecordProcessor sufficient time to complete processing before handing off the lease to another worker. This can help ensure data integrity and smooth transitions but may increase handoff time. When set to false, the lease will be handed off immediately without waiting for the RecordProcessor to shut down gracefully. This can lead to faster handoffs but may risk incomplete processing.  Note: Checkpointing must be implemented inside the shutdownRequested() method of the RecordProcessor to get benefited from the graceful lease handoff feature.  This is a new configuration introduced in KCL 3.x. | TRUE |
+| gracefulLeaseHandoffTimeoutMillis | LeaseManagementConfig | Specifies the minimum time (in milliseconds) to wait for the current shard's RecordProcessor to gracefully shut down before forcefully transferring the lease to the next owner.   If your processRecords method typically runs longer than the default value, consider increasing this setting. This ensures the RecordProcessor has sufficient time to complete its processing before the lease transfer occurs.  This is a new configuration introduced in KCL 3.x. | 30000 (30 seconds) |
+
+
 ## Discontinued configuration properties in KCL 3.x
 The following configuration properties are discontinued in KCL 3.x:
 | Configuration property | Configuration class | Description |
-|------------------------|----------------------|-------------|
+|---|---|---|
 | maxLeasesToStealAtOneTime | LeaseManagementConfig | The maximum number of leases an application should attempt to steal at one time. KCL 3.x will ignore this configuration and reassign leases based on the resource utilization of workers. |
 | enablePriorityLeaseAssignment | LeaseManagementConfig | Controls whether workers should prioritize taking very expired leases (leases not renewed for 3x the failover time) and new shard leases, regardless of target lease counts but still respecting max lease limits. KCL 3.x will ignore this configuration and always spread expired leases across workers. |
 

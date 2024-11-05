@@ -47,7 +47,7 @@ You can set configuration properties to customize Kinesis Client Library's funct
 | metricsLevel | MetricsConfig | Specifies the granularity level of CloudWatch metrics to be enabled and published.   Possible values: NONE, SUMMARY, DETAILED. | MetricsLevel.DETAILED |
 | metricsEnabledDimensions | MetricsConfig | Controls allowed dimensions for CloudWatch Metrics. | All dimensions |
 
-##New configurations in KCL 3.x
+## New configurations in KCL 3.x
 The following configuraiton properties are newly added in KCL 3.x: 
 | Configuration property | Configuration class | Description | Default value |
 |---|---|---|---:|
